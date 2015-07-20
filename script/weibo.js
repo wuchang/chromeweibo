@@ -42,7 +42,7 @@ function readWeiboItem(feed, feed_handle) {
     console.log(feed.html())
 
   item.author = author;
-  item.text = feed.find('div.WB_text:eq(0)').text();
+  item['text'] = feed.find('div.WB_text:eq(0)').text();
 
   //链接
   {
@@ -56,19 +56,19 @@ function readWeiboItem(feed, feed_handle) {
   }
   
   //评论转发数
-  item['forward'] = extractNumber(feed_handle.find('span[node-type="forward_btn_text"]').text());
-  item['comment'] = extractNumber(feed_handle.find('span[node-type="comment_btn_text"]').text());
-  item['like'] = extractNumber(feed_handle.find('span[node-type="like_status"]').text());
+  item['reposts_count'] = extractNumber(feed_handle.find('span[node-type="forward_btn_text"]').text());
+  item['comments_count'] = extractNumber(feed_handle.find('span[node-type="comment_btn_text"]').text());
+  item['attitudes_count'] = extractNumber(feed_handle.find('span[node-type="like_status"]').text());
 
   //发布时间和链接
   {
     var f = feed.find('div.WB_from:eq(0)')
     var a = f.find('a[node-type="feed_list_item_date"]:first()')
-    item.postOn = a.attr('title')
+    item['created_at'] = a.attr('title')
     item.url = a.attr('href');
 
-    var a = f.find('a[action-type="app_source"]:first()')
-    item.appsource = a.text();
+    a = f.find('a[action-type="app_source"]:first()')
+    item['source'] = a.text();
   }
   return item;
 }
@@ -77,7 +77,7 @@ function readWeiboItem(feed, feed_handle) {
 function readWeiboItem2(feed) {
   var item = {};
   item.author = feed.find('div.WB_info>a:first()').attr('nick-name');
-  item.text = feed.find('div.WB_text:eq(0)').text();
+  item['text'] = feed.find('div.WB_text:eq(0)').text();
 
   //链接
   {
@@ -93,19 +93,19 @@ function readWeiboItem2(feed) {
   //评论转发数
   {
     var feed_handle = feed.find('.WB_handle:first()');
-    item['forward'] = extractNumber(feed_handle.find('a:eq(0)').text());
-    item['comment'] = extractNumber(feed_handle.find('a:eq(1)').text());
-    item['like'] = extractNumber(feed_handle.find('a:eq(2)').text());
+    item['reposts_count'] = extractNumber(feed_handle.find('a:eq(0)').text());
+    item['comments_count'] = extractNumber(feed_handle.find('a:eq(1)').text());
+    item['attitudes_count'] = extractNumber(feed_handle.find('a:eq(2)').text());
   }
   //发布时间和链接
   {
     var f = feed.find('div.WB_from:eq(0)')
     var a = f.find('a[node-type="feed_list_item_date"]:first()')
-    item.postOn = a.attr('title')
+    item['created_at'] = a.attr('title')
     item.url = a.attr('href');
 
-    var a = f.find('a[action-type="app_source"]:first()')
-    item.appsource = a.text();
+    a = f.find('a[action-type="app_source"]:first()')
+    item['source'] = a.text();
   }
 
 
