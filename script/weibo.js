@@ -9,7 +9,7 @@ function readWeibo() {
   console.log('weibo count:' + arrfeed.length)
 
   for (var i = 0; i < arrfeed.length; i++) {
-    var feed = arrfeed[i];
+    var feed = $(arrfeed[i]);
 
     var item = readWeiboItem(feed)
     
@@ -44,7 +44,7 @@ function readWeiboItem(feed) {
 
   item.author = author;
   item['text'] = feed_detail.find('div.WB_text:eq(0)').text();
-
+  item['mid'] = feed.attr('mid')
   //链接
   {
     var arrLink = $.makeArray($('div.WB_text:eq(0) a.W_btn_cardlink', feed_detail).map(function () {
@@ -63,11 +63,11 @@ function readWeiboItem(feed) {
 
   //发布时间和链接
   {
-    var f = feed_detail.find('div.WB_from:eq(0)')
+    var f = feed_detail.find('div.WB_from:last()')
     var a = f.find('a[node-type="feed_list_item_date"]:first()')
     item['created_at'] = a.attr('title')
     item.url = a.attr('href');
-
+    item.url = item.url.substr(0,item.url.indexOf('?'))
     a = f.find('a[action-type="app_source"]:first()')
     item['source'] = a.text();
   }
@@ -79,7 +79,8 @@ function readWeiboItem2(feed) {
   var item = {};
   item.author = feed.find('div.WB_info>a:first()').attr('nick-name');
   item['text'] = feed.find('div.WB_text:eq(0)').text();
-
+  item['mid'] = feed.find('div[mid]:first()').attr('mid')
+  
   //链接
   {
     var arrLink = $.makeArray($('a[action-type="feed_list_url"]', feed).map(function () {
