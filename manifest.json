@@ -6,7 +6,7 @@
     "scripts": ["background.js"]
   },
   "content_scripts": [ {
-    "js": [ "script/jquery-2.1.4.min.js", "script/contentscript.js" 
+    "js": [ "script/jquery-2.1.4.min.js", "script/contentscript.js" , "script/weibo.js" 
       ],
     "matches": [ "http://weibo.com/*" ]
     }],

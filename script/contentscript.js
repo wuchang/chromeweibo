@@ -9,6 +9,7 @@ chrome.runtime.onMessage.addListener(function(msg, sender, sendResponse) {
     }
 });
 
+/*
 var script2 = document.createElement('script');
 script2.src = "http://localhost/script/jquery-2.1.4.min.js"
 script2.addEventListener('load', function() {
@@ -19,3 +20,6 @@ script2.addEventListener('load', function() {
 
  })
 document.head.appendChild(script2);
+*/
+
+

@@ -28,8 +28,8 @@ function readWeibo() {
     arrWeiboItem.push(item);
   }
 
-  console.log('items:', arrWeiboItem);
-  console.log('send to server');
+  return  arrWeiboItem;
+
 }
 
 //读取微博内容
@@ -135,4 +135,8 @@ function extractNumber(str) {
   return '0';
 }
 
-scrollWin()
+
+window.setTimeout(function(){
+    var arr=readWeibo();
+    chrome.runtime.sendMessage({cmd: "sendToServer",weibo:arr}, function(response) {  console.log(response); });
+},1000);

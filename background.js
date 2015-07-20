@@ -19,9 +19,10 @@ function doStuffWithDOM(domContent) {
     console.log("I received the following DOM content:\n" + domContent);
 }
 
-chrome.extension.onMessage.addListener(
+chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
     // LOG THE CONTENTS HERE
-    console.log(request.content);
+    console.log('on message')
+    console.log(request);
   }
 );
