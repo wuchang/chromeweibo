@@ -10,10 +10,8 @@ function readWeibo() {
 
   for (var i = 0; i < arrfeed.length; i++) {
     var feed = arrfeed[i];
-    var feed_detail = $('.WB_feed_detail:first()', feed);
-    var feed_handle = $('.WB_feed_handle:first()', feed);
 
-    var item = readWeiboItem(feed_detail, feed_handle)
+    var item = readWeiboItem(feed)
     
     
     //是否转发微博
@@ -35,18 +33,21 @@ function readWeibo() {
 }
 
 //读取微博内容
-function readWeiboItem(feed, feed_handle) {
+function readWeiboItem(feed) {
+  var feed_detail = $('.WB_feed_detail:first()', feed);
+  var feed_handle = $('.WB_feed_handle:first()', feed);
+
   var item = {};
-  var author = feed.find('div.WB_info:eq(0) a:first()').attr('nick-name');
+  var author = feed_detail.find('div.WB_info:eq(0) a:first()').attr('nick-name');
   if (author.length == 0)
-    console.log(feed.html())
+    console.log(feed_detail.html())
 
   item.author = author;
-  item['text'] = feed.find('div.WB_text:eq(0)').text();
+  item['text'] = feed_detail.find('div.WB_text:eq(0)').text();
 
   //链接
   {
-    var arrLink = $.makeArray($('div.WB_text:eq(0) a.W_btn_cardlink', feed).map(function () {
+    var arrLink = $.makeArray($('div.WB_text:eq(0) a.W_btn_cardlink', feed_detail).map(function () {
       var self = $(this);
       return { link: self.attr('href'), title: self.attr('title') };
     }));
@@ -62,7 +63,7 @@ function readWeiboItem(feed, feed_handle) {
 
   //发布时间和链接
   {
-    var f = feed.find('div.WB_from:eq(0)')
+    var f = feed_detail.find('div.WB_from:eq(0)')
     var a = f.find('a[node-type="feed_list_item_date"]:first()')
     item['created_at'] = a.attr('title')
     item.url = a.attr('href');
